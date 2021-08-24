@@ -1,0 +1,18 @@
+#!/bin/bash
+
+export API_TOKEN=XXXXXXXXXXXXXXXXXXXXXXXXXXX
+export DOMAIN_ID=YYYYYYYYYYYYYYYYYYY
+export YOUR_OKTA_DOMAIN=okta.example.com
+
+
+curl -k -v -X PUT \
+-H "Accept: application/json" \
+-H "Content-Type: application/json" \
+-H "Authorization: SSWS $API_TOKEN" \
+-d '{
+        "type": "PEM",
+        "privateKey": "$PRIVKEY",
+        "certificate": "$CERT",
+        "certificateChain": "$CHAIN"
+    }' \
+"https://$YOUR_OKTA_DOMAIN/api/v1/domains/$DOMAIN_ID/certificate"

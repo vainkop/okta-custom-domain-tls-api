@@ -1,0 +1,15 @@
+version: "3.8"
+services:
+  certbot:
+    container_name: certbot
+    image: certbot/dns-route53:v1.14.0
+    restart: unless-stopped
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
+      - /var/lib/letsencrypt:/var/lib/letsencrypt
+#    command: certonly --dns-route53 d okta.example.com --non-interactive --agree-tos --register-unsafely-without-email
+    environment:
+      - AWS_ACCESS_KEY_ID=XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+      - AWS_SECRET_ACCESS_KEY=YYYYYYYYYYYYYYYYYYYYYYYYYY
+      - AWS_DEFAULT_REGION=us-east-1
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew --dns-route53 --non-interactive --agree-tos --register-unsafely-without-email; sleep 12h & wait $${!}; done;'"
